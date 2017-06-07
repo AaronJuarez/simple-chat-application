@@ -20,7 +20,7 @@ public class ChatServer {
 			Socket soc = ss.accept();
 			System.out.println("Connection established");
 			ConversationHandler handler = new ConversationHandler(soc);
-			handler.run();
+			handler.start();
 		}
 
 	}
@@ -67,8 +67,20 @@ class ConversationHandler extends Thread {
 				count++;
 				
 			}
-			out.println("NAMEACCEPTED");
+			out.println("NAMEACCEPTED" + name);
 			ChatServer.printWriters.add(out);
+			
+			while(true) {
+				String message = in.readLine();
+				
+				if(message == null) {
+					return;
+				}
+				
+				for(PrintWriter writer : ChatServer.printWriters) {
+					writer.println(name + ": " + message);
+				}
+			}
 			
 
 		} catch (Exception e) {
