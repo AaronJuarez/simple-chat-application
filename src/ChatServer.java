@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -33,9 +35,16 @@ class ConversationHandler extends Thread {
 	BufferedReader in;
 	PrintWriter out;
 	String name;
+	PrintWriter pw;
+	static FileWriter fw;
+	static BufferedWriter bw;
+	
 
 	public ConversationHandler(Socket socket) throws IOException {
 		this.socket = socket;
+		fw = new FileWriter("/Users/Aaron/Documents/workspaceOtherApps/ChatServer-logs.txt", true);
+		bw = new BufferedWriter(fw);
+		pw = new PrintWriter(bw, true);
 	}
 	
 	@Override
@@ -76,6 +85,8 @@ class ConversationHandler extends Thread {
 				if(message == null) {
 					return;
 				}
+				
+				pw.println(name + ": " + message);
 				
 				for(PrintWriter writer : ChatServer.printWriters) {
 					writer.println(name + ": " + message);
