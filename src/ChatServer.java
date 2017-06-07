@@ -20,6 +20,7 @@ public class ChatServer {
 			Socket soc = ss.accept();
 			System.out.println("Connection established");
 			ConversationHandler handler = new ConversationHandler(soc);
+			handler.run();
 		}
 
 	}
